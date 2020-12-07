@@ -3,10 +3,12 @@
     <el-container>
       <el-aside width="200px">
         <el-menu router default-active="2" class="el-menu-vertical-demo">
-          <el-menu-item index="/">
-            <i class="el-icon-location"></i>
-            <span slot="title">首页</span>
-          </el-menu-item>
+          <router-link to="/">
+            <el-menu-item>
+              <i class="el-icon-location"></i>
+              <span slot="title">首页</span>
+            </el-menu-item>
+          </router-link>
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-menu"></i>
@@ -56,7 +58,7 @@
         </el-header>
         <!-- 中间内容 -->
         <el-main>
-          <router-view />
+          中间内容
         </el-main>
       </el-container>
     </el-container>
@@ -67,7 +69,6 @@
 export default {};
 </script>
 
-// 导航样式
 <style>
 .el-header,
 .el-footer {

@@ -2,7 +2,11 @@
   <div class="home">
     <p>counet:{{ count }}</p>
     <p>getterFn:{{ getterFn }}</p>
-    <el-button @click="add">点击</el-button>
+    <el-button @click="add">数字增加</el-button>
+    <p>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </p>
   </div>
 </template>
 
@@ -18,7 +22,7 @@ export default {
   methods: {
     add() {
       // this.$store.commit("admin/try/add");
-      this.$store.dispatch("admin/try/addFn")
+      this.$store.dispatch("admin/try/addFn");
     },
   },
 };
