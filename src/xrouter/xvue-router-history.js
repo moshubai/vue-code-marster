@@ -1,3 +1,4 @@
+// 实现利用H5history.pushState(state, title [, url])来实现vue-router的history
 // 声明组件内的Vue  此为下位的this指向
 let Vue;
 class VueRouter {

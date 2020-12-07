@@ -1,3 +1,4 @@
+// 实现vue的hash
 // 声明组件内的Vue  此为下位的this指向
 let Vue;
 
@@ -20,7 +21,7 @@ class VueRouter {
 
 }
 // 组件
-VueRouter.install = function(_Vue) {
+VueRouter.install = function (_Vue) {
 	Vue = _Vue;
 	// mixin 混入
 	Vue.mixin({
