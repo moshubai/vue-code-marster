@@ -1,4 +1,4 @@
-// 实现vue的hash
+// 实现vue-router的hash
 // 声明组件内的Vue  此为下位的this指向
 let Vue;
 

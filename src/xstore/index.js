@@ -5,52 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        counter: 1
+        count: 1
     },
     mutations: {
         add(state) {
-            state.counter++
+            state.count++
         }
     },
     actions: {
-        add({ commit }) {
-            setTimeout(() => {
-                commit('add')
-            }, 1000);
+        addFn({ commit }) {
+            commit('add')
         }
     },
     getters: {
-        doubleCounter(state) {
-            return state.counter * 2
+        doubleCount(state) {
+            return state.count * 2
         }
     }
 })
-
-
-// import Vue from 'vue'
-// import Vuex from './kvuex'
-
-// Vue.use(Vuex)
-
-// export default new Vuex.Store({
-//   state: {
-//     counter: 1
-//   },
-//   mutations: {
-//     add(state) {
-//       state.counter++
-//     }
-//   },
-//   actions: {
-//     add({commit}) {
-//       setTimeout(() => {
-//         commit('add')
-//       }, 1000);
-//     }
-//   },
-//   getters: {
-//     doubleCounter(state) {
-//       return state.counter * 2
-//     }
-//   }
-// })

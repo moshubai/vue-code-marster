@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <p>counet:{{ count }}</p>
-    <p>getterFn:{{ getterFn }}</p>
+    <p>counet:{{ $store.state.count }}</p>
+    <p>测试getters：{{$store.getters.doubleCount}}</p>
+    <!-- <p>getterFn:{{ $store.getterFn }}</p> -->
     <el-button @click="add">数字增加</el-button>
     <p>
       <router-link to="/">Home</router-link> |
@@ -11,18 +12,19 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+// import { mapState, mapGetters, mapMutations } from "vuex";
 export default {
   name: "Home",
   components: {},
   computed: {
-    ...mapState("admin/try", ["count"]),
-    ...mapGetters("admin/try", ["getterFn"]),
+    // ...mapState("admin/try", ["count"]),
+    // ...mapGetters("admin/try", ["getterFn"]),
   },
   methods: {
     add() {
-      // this.$store.commit("admin/try/add");
-      this.$store.dispatch("admin/try/addFn");
+      console.log(this.$store);
+      this.$store.commit("add"); // 同步
+      // this.$store.dispatch("addFn"); // 异步
     },
   },
 };
