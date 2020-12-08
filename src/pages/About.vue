@@ -58,7 +58,8 @@
         </el-header>
         <!-- 中间内容 -->
         <el-main>
-          中间内容
+          <!-- 中间内容 -->
+          <router-view/>
         </el-main>
       </el-container>
     </el-container>
