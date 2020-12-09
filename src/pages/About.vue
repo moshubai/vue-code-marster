@@ -59,6 +59,10 @@
         <!-- 中间内容 -->
         <el-main>
           <!-- 中间内容 -->
+          <router-link to="/about/child">验证子路由</router-link>
+          <div class="tip">
+            eq:若子路由显示成功，证明router.children实现成功
+          </div>
           <router-view/>
         </el-main>
       </el-container>
@@ -70,7 +74,10 @@
 export default {};
 </script>
 
-<style>
+<style lang="less" scoped>
+.tip{
+  color: #ccc;
+}
 .el-header,
 .el-footer {
   text-align: center;
@@ -84,7 +91,7 @@ export default {};
 
 .el-main {
   text-align: center;
-  line-height: 200px;
+  line-height: 40px;
 }
 
 body > .el-container {

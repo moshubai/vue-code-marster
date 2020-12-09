@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <p>counet:{{ $store.state.count }}</p>
-    <p>测试getters：{{$store.getters.doubleCount}}</p>
+    <p>测试getters：{{ $store.getters.doubleCount }}</p>
     <!-- <p>getterFn:{{ $store.getterFn }}</p> -->
     <el-button @click="add">数字增加</el-button>
     <p>
@@ -29,3 +29,15 @@ export default {
   },
 };
 </script>
+<style lang="less" scoped>
+.home {
+  p {
+    width: 100%;
+    line-height: 50px;
+    color: #333333;
+    a{
+      color: #000000;
+    }
+  }
+}
+</style>
