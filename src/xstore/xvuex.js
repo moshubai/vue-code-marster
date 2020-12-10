@@ -57,6 +57,11 @@ class Store {
 			computed[key] = function () {
 				return fn(store.state)
 			}
+			// computed: {
+			// 	doubleCount  () {
+			// 		return store._wrappedGetters['doubleCount'](store.state)
+			// 	}
+			// }
 			// 只读
 			Object.defineProperty(store.getters, key, {
 				get: () => store._vm[key]
@@ -64,13 +69,14 @@ class Store {
 		})
 
 
-
+		console.log(computed, 'computed');
 		// new Vue为响应式方法，可以处理state数据的响应式变化。
 		this._vm = new Vue({
 			data: {
 				$$state: options.state
 			},
 			computed: computed
+
 		})
 
 	}

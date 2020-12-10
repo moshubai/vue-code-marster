@@ -6,21 +6,18 @@
 
     <title>x-vue</title>
 
-    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <!-- <script src="../../node_modules/vue/dist/vue.js"></script> -->
+    <script src="./xvue.js"></script>
 </head>
 
 <body>
 
-    <div id="app">
-        {{counter}}
-    </div>
+    <div id="app"><p>{{counter}}</p><p v-text="counter"></p></div>
     <script>
-        const app = new Vue({
+        const app = new XVue({
             el: "#app",
-            data() {
-                return {
-                    counter: 0
-                }
+            data: {
+                counter: 0
             },
         })
         setInterval(() => {
