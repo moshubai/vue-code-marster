@@ -12,7 +12,10 @@
 
 <body>
 
-    <div id="app"><p>{{counter}}</p><p v-text="counter"></p></div>
+    <div id="app">
+        <p>{{counter}}</p>
+        <p v-text="counter"></p>
+    </div>
     <script>
         const app = new XVue({
             el: "#app",
@@ -20,9 +23,9 @@
                 counter: 0
             },
         })
-        setInterval(() => {
-            app.counter++
-        }, 1000)
+        // setInterval(() => {
+        //     app.counter++
+        // }, 1000)
     </script>
 </body>
 
