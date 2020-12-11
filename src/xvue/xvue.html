@@ -15,17 +15,20 @@
     <div id="app">
         <p>{{counter}}</p>
         <p v-text="counter"></p>
+        <p v-html="htmls"></p>
+        
     </div>
     <script>
         const app = new XVue({
             el: "#app",
             data: {
-                counter: 0
+                counter: 0,
+                htmls:"<p>老婆是<span style='font-weight: 600;'>女王</span></p>"
             },
         })
-        // setInterval(() => {
-        //     app.counter++
-        // }, 1000)
+        setInterval(() => {
+            app.counter++
+        }, 1000)
     </script>
 </body>
 
