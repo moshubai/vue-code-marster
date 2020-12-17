@@ -1,10 +1,56 @@
+// 数组响应式实现
+const methodsToPatch = [
+	'push',
+	'pop',
+	'shift',
+	'unshift',
+	'splice',
+	'sort',
+	'reverse'
+]
+// 1.替换数组原型常用的7个方法
+const arrayProto = Array.prototype;
+// 2.备份，并修改备份
+const arrayMethods = Object.create(arrayProto);
+
+methodsToPatch.forEach(method => {
+	arrayMethods[method] = function () {
+		// 原始操作
+		orginalProto[method].apply(this.arguments)
+		// 覆盖操作;通知更新
+		console.log('set' + key + newVal);
+
+
+		
+	}
+
+
+})
+// export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
+//   Object.defineProperty(obj, key, {
+//     value: val,
+//     enumerable: !!enumerable,
+//     writable: true,
+//     configurable: true
+//   })
+// }
+
+
+
+
+
+
+
+
+
+
 // 实现 defineReactive 
 function defineReactive(obj, key, val) {
 	observe(val)
 	const dep = new Dep()
 	Object.defineProperty(obj, key, {
 		get() {
-			console.log('get', val);
+			// console.log('get', val);
 			// 判断Dep.target是否存在，若存在则收集依赖
 			Dep.target && dep.addDep(Dep.target)
 			return val
@@ -12,7 +58,7 @@ function defineReactive(obj, key, val) {
 
 		set(v) {
 			if (v !== val) {
-				console.log('set', val)
+				// console.log('set', val)
 				val = v
 				dep.notity()
 				// watchers.forEach(val => val.undate())
@@ -23,7 +69,7 @@ function defineReactive(obj, key, val) {
 }
 
 function observe(obj) {
-	console.log(obj);
+	// console.log(obj);
 	if (typeof obj !== "object" || obj === null) {
 		return;
 	}
@@ -41,12 +87,26 @@ class Observe {
 		this.value = obj
 		if (Array.isArray(obj)) {
 			// 数组处理方法
+			this.isArrFn(obj)
 		} else {
 			// Object 处理方法
 			this.walk(obj)
 		}
 
 	}
+	// 数组处理方法
+	isArrFn(obj) {
+		console.log(obj);
+		// 覆盖原型，替换7个变更操作
+		obj.__proto__ = arrayProto
+		// 对数组内部元素执行响应式
+		for (let i = 0; i < obj.length; i++) {
+			const element = obj[i];
+			observe(element)
+		}
+
+	}
+	// object 处理方法
 	walk(obj) {
 		Object.keys(obj).forEach((key) => {
 			defineReactive(obj, key, obj[key])
@@ -75,97 +135,12 @@ class XVue {
 		// 代理
 		proxy(this)
 		// 编译
-		console.log(options.el, this);
+		// console.log(options.el, this);
 		new Compile(options.el, this)
 	}
 }
 
-class Compile {
-	constructor(el, vm) {
-		this.$vm = vm
 
-		this.$el = document.querySelector(el)
-		this.compile(this.$el)
-	}
-	compile(el) {
-		el.childNodes.forEach((node) => {
-			if (node.nodeType === 1) {
-				console.log('编译元素', node.nodeName);
-				this.compileElement(node)
-				// 递归
-				// console.log(node);
-				if (node.childNodes.length > 0) {
-					this.compile(node)
-				}
-			} else if (this.isInter(node)) {
-				// 插值绑定文本
-				// console.log("编译文本", node.textContent);
-				this.compileText(node)
-			}
-		})
-	}
-	isInter(node) {
-		return node.nodeType === 3 && /\{\{(.*)\}\}/.test(node.textContent)
-	}
-	isDir(attrName) {
-		// v- 开头
-		return attrName.startsWith('v-')
-	}
-	// update : 给传入的node做初始化并创建watcher负责其更新
-	undate(node, exp, dir) {
-		const fn = this[dir + 'Updater']
-		fn && fn(node, this.$vm[exp])
-
-		// 创建watcher实例
-		new Watcher(this.$vm, exp, function (val) {
-			fn && fn(node, val)
-		})
-	}
-
-
-	// 插值文本编译{{}}
-	compileText(node) {
-		this.undate(node, RegExp.$1, 'text')
-		// console.log(RegExp.$1, this.$vm);
-		// node.textContent = this.$vm[RegExp.$1]
-
-	}
-	textUpdater(node, val) {
-		// node.textContent = this.$vm[RegExp.$1]
-		node.textContent = val
-	}
-
-	// 编译元素
-	compileElement(node) {
-
-		const nodeAttrs = node.attributes
-		console.log(node.attributes, Array.from(nodeAttrs));
-		Array.from(nodeAttrs).forEach(attr => {
-			// v-xx
-			console.log(attr);
-			const attrName = attr.name // v-text
-			const exp = attr.value  //counter
-			console.log(attr.value);
-			if (this.isDir(attrName)) {
-				const dir = attrName.substring(2)
-				this[dir] && this[dir](node, exp)
-			}
-		})
-	}
-	// v-text
-	text(node, exp) {
-		// node.textContent = this.$vm[exp]
-		this.undate(node, exp, 'text')
-	}
-	// v-html
-	html(node, exp) {
-		// node.innerHTML = this.$vm[exp]
-		this.undate(node, exp, 'html')
-	}
-	htmlUpdater(node, val) {
-		node.innerHTML = val
-	}
-}
 
 
 // const watchers = []

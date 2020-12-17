@@ -7,6 +7,7 @@
     <title>x-vue</title>
 
     <!-- <script src="../../node_modules/vue/dist/vue.js"></script> -->
+    <script src="./compiler.js"></script>
     <script src="./xvue.js"></script>
 </head>
 
@@ -16,19 +17,45 @@
         <p>{{counter}}</p>
         <p v-text="counter"></p>
         <p v-html="htmls"></p>
-        
+        <p>
+            <button @click="onclick">按钮</button>
+        </p>
+        <!-- 实现简单的 input 双向绑定 -->
+        <input type="text" v-modal="htmls">
+        <ul>
+            <li v-for="(item,i) in lists" :key="i">
+                <p>
+                    <span>英雄：{{item.name}}</span>
+                    <span>位置：{{item.wz}}</span>
+                </p>
+            </li>
+        </ul>
+
     </div>
     <script>
         const app = new XVue({
             el: "#app",
             data: {
                 counter: 0,
-                htmls:"<p>老婆是<span style='font-weight: 600;'>女王</span></p>"
+                htmls: "<p>老婆是<span style='font-weight: 600;'>女王</span></p>",
+                lists: [
+                    { name: "小乔", wz: "法师" },
+                    { name: "蔡文姬", wz: "奶妈" }
+                ]
+            },
+            methods: {
+                onclick() {
+                    this.counter++;
+                    this.lists.push({
+                        name: "大乔",
+                        wz: "辅助"
+                    })
+                }
             },
         })
-        setInterval(() => {
-            app.counter++
-        }, 1000)
+        // setInterval(() => {
+        //     app.counter++
+        // }, 1000)
     </script>
 </body>
 
