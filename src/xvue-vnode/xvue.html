@@ -17,10 +17,11 @@
             data: {
                 counter: 0
             },
-            render() {
-                const p1 = document.createElement('p')
-                p1.textContent = this.counter
-                return p1
+
+            render(h) {
+                return h('div', { id: 'app', title: this.counter }, [
+                    h('p', null, this.counter + '')
+                ])
             },
         })
         setInterval(() => {

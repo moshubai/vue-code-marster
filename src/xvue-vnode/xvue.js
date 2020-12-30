@@ -68,10 +68,6 @@ function proxy(vm, key) {
 	})
 }
 
-
-
-
-
 class XVue {
 	constructor(options) {
 		// 响应式
@@ -99,15 +95,136 @@ class XVue {
 			// 执行render
 			const { render } = this.$options;
 
-			const el = render.call(this)
-			const parent = this.$el.parentElement
-			parent.insertBefore(el, this.$el.nextSibling)
-			parent.removeChild(this.$el)
-			this.$el = el
-			
+			// const el = render.call(this)
+			// const parent = this.$el.parentElement
+			// parent.insertBefore(el, this.$el.nextSibling)
+			// parent.removeChild(this.$el)
+			// this.$el = el
+			const vnode = render.call(this, this.$createElement)
+			this._update(vnode)
 		}
 		// 创建watcher实例
 		new Watcher(this, updateComponent)
+	}
+
+	$createElement(tag, props, children) {
+		return { tag, props, children }
+	}
+
+	_update(vnode) {
+		// 获取上次执行的vnode
+		const prevVnode = this._vnode
+
+		// init
+		if (!prevVnode) {
+			this.__path__(this.$el, vnode)
+		} else {
+			// update
+			this.__path__(prevVnode, vnode)
+		}
+	}
+
+	__path__(oldVnode, vnode) {
+
+		if (oldVnode.nodeType) {
+			// init
+			const parent = oldVnode.parentElement
+			const refElm = oldVnode.nextSibling
+			// const el = document.createElement(vnode.tag)
+			const elm = this.createElm(vnode)
+			parent.insertBefore(elm, refElm)
+			parent.removeChild(oldVnode)
+		} else {
+			// 要从真是的dom获取
+			const elm = vnode.elm = oldVnode.elm
+			// update
+			// props
+			const oldProps = oldVnode.props || {}
+			const newProps = vnode.props || {}
+			for (const key in newProps) {
+				// 
+				elm.setAttribute(key, newProps[key])
+			}
+			for (const key in oldVnode) {
+				if (!(key in newProps)) {
+					elm.removeAttribute(key)
+				}
+			}
+
+			// children
+			const oldCh = oldVnode.children
+			const newCh = vnode.children
+			// text
+			if (typeof newCh === 'string') {
+				if (typeof oldCh === 'string') {
+					if (newCh !== oldCh) {
+						elm.textContent = oldCh
+					}
+				} else {
+					elm.textContent = newCh
+				}
+			} else {
+				// 双方都是数组
+				if (typeof oldCh === 'string') {
+					// 清空 创建
+					elm.innerHtml = ''
+					newCh.forEach((child) => {
+
+						elm.appendChild(this.createElm(child))
+					})
+				} else {
+					// 重排
+					this.updataChildren(elm, oldCh, newCh)
+				}
+			}
+
+
+		}
+		// 保存vnode
+		this._vnode = vnode
+	}
+	updataChildren(parentElm, oldCh, newCh) {
+
+		const len = Math.min(oldCh.length, newCh.length)
+		for (let i = 0; i < len; i++) {
+			this.__path__(oldCh[i], newCh[i])
+		}
+		// 若有个长，则更新
+		if (newCh.length > oldCh.length) {
+			newCh.slice(len).forEach((child) => {
+				const el = this.createElm(child)
+				parentElm.appendChild(el)
+			})
+		} else if (newCh.length < oldCh.length) {
+			oldCh.slice(len).forEach(child => {
+				parentElm.removeChild(child.el)
+			})
+		}
+	}
+	createElm(vnode) {
+		const elm = document.createElement(vnode.tag)
+		// props
+		if (vnode.props) {
+			for (const key in vnode.props) {
+				const value = vnode.props[key]
+				elm.setAttribute(key, value)
+			}
+		}
+		// children
+		if (vnode.children) {
+			if (typeof vnode.children === 'string') {
+				// text
+				elm.textContent = vnode.children
+			} else {
+				vnode.children.forEach(v => {
+					const child = this.createElm(v)
+					elm.appendChild(child)
+				})
+
+			}
+		} 
+		vnode.elm = elm
+		return elm
 	}
 }
 
