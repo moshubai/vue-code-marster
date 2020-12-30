@@ -12,34 +12,17 @@ const methodsToPatch = [
 const arrayProto = Array.prototype;
 // 2.备份，并修改备份
 const arrayMethods = Object.create(arrayProto);
-
 methodsToPatch.forEach(method => {
 	arrayMethods[method] = function () {
+		const dep = new Dep()
 		// 原始操作
-		orginalProto[method].apply(this.arguments)
+		const result = arrayProto[method].apply(this, [])
 		// 覆盖操作;通知更新
-		console.log('set' + key + newVal);
-
-
-		
+		dep.notity()
+		return result
 	}
 
-
 })
-// export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
-//   Object.defineProperty(obj, key, {
-//     value: val,
-//     enumerable: !!enumerable,
-//     writable: true,
-//     configurable: true
-//   })
-// }
-
-
-
-
-
-
 
 
 
@@ -87,7 +70,7 @@ class Observe {
 		this.value = obj
 		if (Array.isArray(obj)) {
 			// 数组处理方法
-			this.isArrFn(obj)
+			this.observeArray(obj)
 		} else {
 			// Object 处理方法
 			this.walk(obj)
@@ -95,10 +78,10 @@ class Observe {
 
 	}
 	// 数组处理方法
-	isArrFn(obj) {
+	observeArray(obj) {
 		console.log(obj);
 		// 覆盖原型，替换7个变更操作
-		obj.__proto__ = arrayProto
+		obj.__proto__ = arrayMethods
 		// 对数组内部元素执行响应式
 		for (let i = 0; i < obj.length; i++) {
 			const element = obj[i];

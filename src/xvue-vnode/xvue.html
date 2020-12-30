@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Vnode的实现</title>
+    <script src="./xvue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{counter}}</p>
+    </div>
+    <script>
+        const app = new XVue({
+            el: "#app",
+            data: {
+                counter: 0
+            },
+            render() {
+                const p1 = document.createElement('p')
+                p1.textContent = this.counter
+                return p1
+            },
+        })
+        setInterval(() => {
+            app.counter++
+        }, 1000)
+    </script>
+</body>
+
+</html>

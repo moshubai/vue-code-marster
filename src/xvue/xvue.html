@@ -23,6 +23,7 @@
         <!-- 实现简单的 input 双向绑定 -->
         <input type="text" v-modal="htmls">
         <ul>
+            {{lists}}
             <li v-for="(item,i) in lists" :key="i">
                 <p>
                     <span>英雄：{{item.name}}</span>
