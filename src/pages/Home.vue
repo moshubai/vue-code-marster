@@ -5,7 +5,7 @@
     <!-- <p>getterFn:{{ $store.getterFn }}</p> -->
     <el-button @click="add">数字增加</el-button>
     <p>
-      <router-link to="/">Home</router-link> |
+      <router-link to="/"><svg-icon icon-class='wx'></svg-icon>Home</router-link> |
       <router-link to="/about">About</router-link>
     </p>
   </div>

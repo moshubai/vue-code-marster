@@ -79,35 +79,50 @@ module.exports = {
         config
             // 开发环境
             .when(process.env.NODE_ENV === 'development',
-                  // sourcemap不包含列信息
-                  config => config.devtool('cheap-source-map')
+                // sourcemap不包含列信息
+                config => config.devtool('cheap-source-map')
             )
             // 非开发环境
             .when(process.env.NODE_ENV !== 'development', config => {
 
-        });
+            });
 
-        // image exclude
-        const imagesRule = config.module.rule('images');
-        imagesRule
-            .test(/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/)
-            .exclude
-            .add(resolve('src/assets/svg'))
-            .end();
-        // 重新设置 alias
+        // svg
+        config.module.rule('svg')
+            .exclude.add(resolve('src/assets/icons'))
+
+        config.module.rule('icons')
+            .test(/\.svg$/)
+            .include.add(resolve('src/assets/icons')).end()
+            .use('svg-sprite-loader')
+            .loader('svg-sprite-loader')
+            .options({ symbolId: 'icon-[name]' })
+
+
+
+
+            
+            
+        // images exclude
+        // config.module.rule('images')
+        //     .test(/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/)
+        //     .exclude
+        //     .add(resolve('src/assets/svg'))
+        //     .end();
+        // // 重新设置 alias
         config.resolve.alias
             .set('@api', resolve('src/api'))
-            .set('@page',resolve('src/pages'));
-        // node
-        config.node
-            .set('__dirname', true)
-            .set('__filename', true);
-        // 判断是否需要加入模拟数据
-        const entry = config.entry('app');
-        if (Setting.isMock) {
-            entry
-                .add('@/mock')
-                .end()
-        }
+            .set('@page', resolve('src/pages'));
+        // // node
+        // config.node
+        //     .set('__dirname', true)
+        //     .set('__filename', true);
+        // // 判断是否需要加入模拟数据
+        // const entry = config.entry('app');
+        // if (Setting.isMock) {
+        //     entry
+        //         .add('@/mock')
+        //         .end()
+        // }
     }
 };

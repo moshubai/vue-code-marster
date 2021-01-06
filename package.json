@@ -37,6 +37,7 @@
     "hard-source-webpack-plugin": "^0.13.1",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
+    "svg-sprite-loader": "^5.2.1",
     "vue-template-compiler": "^2.6.11"
   }
 }
