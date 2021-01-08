@@ -101,14 +101,14 @@ module.exports = {
 
 
 
-            
-            
+
+
         // images exclude
-        // config.module.rule('images')
-        //     .test(/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/)
-        //     .exclude
-        //     .add(resolve('src/assets/svg'))
-        //     .end();
+        config.module.rule('images')
+            .test(/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/)
+            .exclude.add(resolve('src/assets/svg')).end()
+            .exclude.add(resolve('src/assets/icons')).end()
+
         // // 重新设置 alias
         config.resolve.alias
             .set('@api', resolve('src/api'))
