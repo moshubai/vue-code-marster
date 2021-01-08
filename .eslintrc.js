@@ -3,17 +3,17 @@ module.exports = {
   env: {
     node: true
   },
-  'extends': [
+  extends: [
     'plugin:vue/essential',
-    'eslint:recommended'
+    '@vue/standard',
+    '@vue/typescript/recommended'
   ],
   parserOptions: {
-    parser: 'babel-eslint'
+    ecmaVersion: 2020
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-unused-vars': 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   },
   overrides: [
     {
